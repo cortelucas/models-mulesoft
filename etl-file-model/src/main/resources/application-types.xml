@@ -181,6 +181,39 @@ type java_security_PublicKey = {|  |} {"typeAlias": "PublicKey",
 
 ]]></types:shape>
     </types:type>
+    <types:type name="PersonInput" format="csv">
+      <types:shape format="raml"><![CDATA[#%RAML 1.0 DataType
+type: array
+items:
+  properties:
+    id:
+      type: string
+    first_name:
+      type: string
+    last_name:
+      type: string
+    email:
+      type: string
+    gender:
+      type: string
+    birth_day:
+      type: date-only]]></types:shape>
+    </types:type>
+    <types:type name="PersonOutput" format="java">
+      <types:shape format="raml"><![CDATA[#%RAML 1.0 DataType
+type: object
+properties:
+  id:
+    type: string
+  name:
+    type: string
+  email:
+    type: string
+  gender:
+    type: string
+  birth_date:
+    type: date-only]]></types:shape>
+    </types:type>
   </types:catalog>
   <types:enrichment select="#77a4f976-9ed6-4b5d-b685-9966ff379b6a">
     <types:processor-declaration>
@@ -210,6 +243,20 @@ type java_security_PublicKey = {|  |} {"typeAlias": "PublicKey",
         <types:message>
           <types:payload type="auto_e0d51d2b-94aa-4574-9294-3e59b93c4a1b_Output-Payload"/>
           <types:attributes type="auto_e0d51d2b-94aa-4574-9294-3e59b93c4a1b_Output-Attributes"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#1b51aa41-fded-4728-8010-dcb92684251d">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="PersonInput"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="PersonOutput"/>
         </types:message>
       </types:output-event>
     </types:processor-declaration>

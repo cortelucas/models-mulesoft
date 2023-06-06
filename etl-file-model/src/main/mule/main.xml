@@ -44,7 +44,43 @@ output application/json
 		<logger level="INFO" doc:name="starts-integration"
 			doc:id="391d9ed8-76fd-45cb-8666-4cc0f5a26288"
 			message='#["LOG: starts integration -&gt; " ++ (app.name as String)]' />
-		<flow-ref doc:name="read-file" doc:id="7f14c9bd-bf5f-41dc-af64-96512665c0e4" name="read-file"/>
+		<flow-ref doc:name="read-file"
+			doc:id="7f14c9bd-bf5f-41dc-af64-96512665c0e4" name="read-file" />
+		<choice doc:name="Choice"
+			doc:id="210dd07c-4f4f-447b-bfd9-b0a6fe286928">
+			<when expression="#[!isEmpty(payload)]">
+				<ee:transform doc:name="transform-data"
+					doc:id="1b51aa41-fded-4728-8010-dcb92684251d">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+
+type PersonOutput = {
+	id: String,
+	name: String,
+	email: String,
+	gender: String,
+	birth_date: Date
+}
+
+var persons: Array<Object> = payload
+---
+persons map ((person): PersonOutput -> {
+    "id": person.id as String,
+    "name": (person.first_name as String) ++ (person.last_name as String),
+    "email": person.email as String,
+    "gender": person.gender as String,
+    "birth_date": person.birth_day as Date
+})]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</when>
+			<otherwise>
+				<logger level="INFO" doc:name="Logger"
+					doc:id="c9da5f61-d5f6-41e9-98e4-631e473170cc"
+					message="There is no data to transform and send." />
+			</otherwise>
+		</choice>
 		<logger level="INFO" doc:name="ends-integration"
 			doc:id="ecdbbccc-0113-4411-8d53-6a28395e370f"
 			message='#["LOG: ends integration -&gt; " ++ (app.name as String)]' />
