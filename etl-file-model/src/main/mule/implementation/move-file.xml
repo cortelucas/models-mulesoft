@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
+	<sub-flow name="move-file"
+		doc:id="ef66915c-fc3f-4757-8568-5288494cc7e1">
+		<try doc:name="Try" doc:id="de371a3a-35b0-46ef-aebd-e392e57065fd">
+			<file:move doc:name="Move"
+				doc:id="3eeff9cf-6560-4d7c-8c7c-da7d7432306f"
+				config-ref="File_Config"
+				sourcePath='${file.work_dir}/${file.path}'
+				targetPath='${file.work_dir}/file/output'
+				renameTo='#["base" ++ ((now() &gt;&gt; "America/Sao_Paulo") as String { format: "yyMMdd-hhMMss" }) as String ++ ".csv"]' />
+			<logger level="INFO" doc:name="Logger"
+				doc:id="aac217c3-41a8-4bb7-9c66-d425fbfc2abc"
+				message="LOG: file sent to output folder." />
+			<error-handler ref="GlobalErrorHandler" />
+		</try>
+	</sub-flow>
+</mule>
