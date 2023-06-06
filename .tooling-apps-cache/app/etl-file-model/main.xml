@@ -74,6 +74,9 @@ persons map ((person): PersonOutput -> {
 })]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
+				<flow-ref doc:name="send-to-database"
+					doc:id="e4072c82-ba89-49cc-bec7-65daa41ff501"
+					name="send-to-database" />
 			</when>
 			<otherwise>
 				<logger level="INFO" doc:name="Logger"

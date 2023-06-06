@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:file="http://www.mulesoft.org/schema/mule/file"
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:file="http://www.mulesoft.org/schema/mule/file"
 	xmlns:http="http://www.mulesoft.org/schema/mule/http"
 	xmlns="http://www.mulesoft.org/schema/mule/core"
 	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
-http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
 	<global-property doc:name="Global Property"
 		doc:id="24bc09f2-f09b-4a18-8db9-ca185e291aca" name="mule-env"
 		value="dev" />
@@ -29,4 +31,10 @@ http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/fil
 		doc:id="b5229fda-5722-4772-8de8-75a76bf3ea2d">
 		<file:connection workingDir="${file.work_dir}" />
 	</file:config>
+	<db:config name="Database_Config" doc:name="Database Config"
+		doc:id="e74acd8c-2e99-4007-8241-bc2b78eb4ca0">
+		<db:generic-connection url="${db.url}"
+			driverClassName="${db.driver}" user="${db.auth.user}"
+			password="${db.auth.pass}" />
+	</db:config>
 </mule>
