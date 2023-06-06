@@ -44,6 +44,7 @@ output application/json
 		<logger level="INFO" doc:name="starts-integration"
 			doc:id="391d9ed8-76fd-45cb-8666-4cc0f5a26288"
 			message='#["LOG: starts integration -&gt; " ++ (app.name as String)]' />
+		<flow-ref doc:name="read-file" doc:id="7f14c9bd-bf5f-41dc-af64-96512665c0e4" name="read-file"/>
 		<logger level="INFO" doc:name="ends-integration"
 			doc:id="ecdbbccc-0113-4411-8d53-6a28395e370f"
 			message='#["LOG: ends integration -&gt; " ++ (app.name as String)]' />
