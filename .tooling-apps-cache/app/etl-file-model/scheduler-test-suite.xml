@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+	xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="scheduler-test-suite.xml" />
+	<munit:test name="scheduler-success-test"
+		doc:id="6cf43575-21a3-4adb-b890-3d6bae4d65b3" description="Test">
+		<munit:behavior>
+			<munit-tools:mock-when doc:name="main call"
+				doc:id="23023f60-0ff8-4b5c-9345-173b7a11149f" processor="flow-ref">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute
+						whereValue="6d878759-3903-4f4e-83f7-9cab5ab1de0d"
+						attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="ref to scheduler" doc:id="cb575d72-b96a-4ab9-9274-6e81f3f0d594" name="scheduler"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="should be able to call main flow" doc:id="ed1117fa-cce9-4ccf-bc8a-cfbdaebba889" processor="flow-ref" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="6d878759-3903-4f4e-83f7-9cab5ab1de0d" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="shouldn't be able to call the GlobalErrorHandler" doc:id="4c86c4af-0270-4549-b1ba-441d3cbec294" processor="logger" times="0">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="70a1afa9-41ea-4e29-a1a0-41e72e45556d" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>

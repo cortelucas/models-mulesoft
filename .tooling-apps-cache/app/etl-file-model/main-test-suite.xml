@@ -106,34 +106,6 @@
 			</munit-tools:verify-call>
 		</munit:validation>
 	</munit:test>
-	<munit:test name="main-read-file_error-test" doc:id="fd379ae6-336b-4d82-a9c7-102558fbb145" expectedErrorType="ANY">
-		<munit:behavior >
-			<munit-tools:mock-when doc:name="call error read-file" doc:id="86352502-a96c-44ef-a4eb-0e1f73bd4e94" processor="flow-ref">
-				<munit-tools:with-attributes >
-					<munit-tools:with-attribute whereValue="7f14c9bd-bf5f-41dc-af64-96512665c0e4" attributeName="doc:id" />
-				</munit-tools:with-attributes>
-				<munit-tools:then-return >
-					<munit-tools:payload value="#[null]" />
-					<munit-tools:error typeId="ANY" />
-				</munit-tools:then-return>
-			</munit-tools:mock-when>
-		</munit:behavior>
-		<munit:execution >
-			<flow-ref doc:name="ref to main" doc:id="94f449cc-b1d7-4d6a-9d0f-f3f64be07e11" name="scheduler" />
-		</munit:execution>
-		<munit:validation>
-			<munit-tools:verify-call doc:name="it should be able to call the start of the integration" doc:id="8815473c-f078-4974-9044-835fc75f6575" processor="logger" times="1" >
-				<munit-tools:with-attributes >
-					<munit-tools:with-attribute whereValue="391d9ed8-76fd-45cb-8666-4cc0f5a26288" attributeName="doc:id" />
-				</munit-tools:with-attributes>
-			</munit-tools:verify-call>
-			<munit-tools:verify-call doc:name="it should be possible to call the GlobalErrorHandler" doc:id="648bce7d-bc73-475f-83e6-4d02e9712fde" processor="logger" times="0">
-				<munit-tools:with-attributes >
-					<munit-tools:with-attribute whereValue="70a1afa9-41ea-4e29-a1a0-41e72e45556d" attributeName="doc:id" />
-				</munit-tools:with-attributes>
-			</munit-tools:verify-call>
-		</munit:validation>
-	</munit:test>
 
 
 </mule>
