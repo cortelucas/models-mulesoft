@@ -4,6 +4,7 @@
     "global.xml",
     "implementation/read-file.xml",
     "listener-test-suite.xml",
+    "send-to-database-test-suite.xml",
     "read-file-test-suite.xml",
     "scheduler-test-suite.xml",
     "main-test-suite.xml",
