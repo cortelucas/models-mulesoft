@@ -16,4 +16,10 @@ Repositório para guardar modelos de projetos em Mulesoft.
 <br>
 
 ## ✏️ Implementações / Implementations
+<details><summary><b>etl-file-model</b></summary>
+
+- Implementação de ETL que extrai dados de uma base CSV e envia para um banco de dados.
+- ETL implementation that extracts data from a CSV base and sends it to a database.
+  
 - [etl-file-model](https://github.com/cortelucas/models-mulesoft/tree/main/etl-file-model)
+</details>
