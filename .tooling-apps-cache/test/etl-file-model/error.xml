@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+	<error-handler name="GlobalErrorHandler"
+		doc:id="445252cf-7a1b-4f5a-a948-fabe0c514f78">
+		<on-error-continue enableNotifications="false"
+			logException="false" doc:name="On Error Continue"
+			doc:id="3cebf8aa-447b-42cd-b35e-9d83e16e38b5"
+			type="APP:FILE_NOT_FOUND">
+			<logger level="ERROR" doc:name="Logger"
+				doc:id="b28df38f-9781-4b63-a9a2-c261a980f23f"
+				message='#["ERROR: " ++ (error.description as String)]' />
+		</on-error-continue>
+		<on-error-propagate enableNotifications="false"
+			logException="false" doc:name="On Error Propagate"
+			doc:id="cde8b676-bbb6-4f71-b34d-7e95eb760160" type="ANY">
+			<logger level="ERROR" doc:name="Logger"
+				doc:id="70a1afa9-41ea-4e29-a1a0-41e72e45556d"
+				message='#["ERROR: " ++ (error.description as String)]' />
+		</on-error-propagate>
+	</error-handler>
+</mule>
