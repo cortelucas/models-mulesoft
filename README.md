@@ -22,4 +22,8 @@ Repositório para guardar modelos de projetos em Mulesoft.
 - ETL implementation that extracts data from a CSV base and sends it to a database.
   
 - [etl-file-model](https://github.com/cortelucas/models-mulesoft/tree/main/etl-file-model)
+  
+  Para utilizar:
+  - Pode baixar [aqui](https://github.com/cortelucas/models-mulesoft/releases/download/etl/etl-file-model.jar)
+  - Pode clonar o repositório ``git clone https://github.com/cortelucas/models-mulesoft.git``
 </details>

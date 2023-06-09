@@ -2,6 +2,10 @@
 Projeto que faz a leitura de um arquivo CSV e envia para o banco de dados.<br>
 Project that reads a CSV file and sends it to the database.
 
+Para utilizar:
+- Pode baixar [aqui](https://github.com/cortelucas/models-mulesoft/releases/download/etl/etl-file-model.jar)
+- Pode clonar o repositório ``git clone https://github.com/cortelucas/models-mulesoft.git``
+
 ## 🚀 Recursos Utilizados / Resources Used
 - [ETL](https://www.ibm.com/topics/etl)
 - [MuleSoft](https://docs.mulesoft.com/general/)
