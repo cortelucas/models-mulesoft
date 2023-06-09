@@ -35,6 +35,35 @@
 			</munit-tools:verify-call>
 		</munit:validation>
 	</munit:test>
+	<munit:test name="read-file-error-test" doc:id="9d4bf0eb-9d8c-4fe0-bf52-1a41b57d3f81" expectedErrorType="ANY">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="call read file" doc:id="792f03fb-07d5-4fc3-b1f7-ed1acf33e5f8" processor="file:read">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="fbbb37be-93e8-43f7-bf48-88db0efdba7a" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="ANY" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<try doc:name="Try" doc:id="75cccc53-8465-412b-96a2-ab24090b0921" >
+				<flow-ref doc:name="ref to read-file" doc:id="6684d325-9b44-4584-82f9-d38e5cc85a0e" name="read-file" />
+			</try>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="it should be able to call the read file connector" doc:id="0bda06ee-92b1-4365-9529-51b895d373f2" processor="file:read" times="1" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="fbbb37be-93e8-43f7-bf48-88db0efdba7a" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="it should be able to call the GlobalErrorHandler" doc:id="a6b43974-97fe-4185-95dc-65ec7ad70fbe" processor="logger" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="70a1afa9-41ea-4e29-a1a0-41e72e45556d" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
 
 
 </mule>

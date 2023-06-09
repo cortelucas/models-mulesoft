@@ -19,7 +19,7 @@
       "exportedResources": [
         "application-types.xml",
         "error.xml",
-        "file/base.csv",
+        "file/output/base.csv",
         "global.xml",
         "implementation/move-file.xml",
         "implementation/read-file.xml",
