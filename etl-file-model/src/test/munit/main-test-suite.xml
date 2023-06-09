@@ -69,6 +69,43 @@
 			</munit-tools:verify-call>
 		</munit:validation>
 	</munit:test>
+	<munit:test name="main-test-suiteTest" doc:id="11e8f839-5fc5-44c7-8c6e-1c5142c0d93a" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="call read-file" doc:id="6f6d5f45-7b93-423b-aac5-013669dbed0b" processor="flow-ref" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="7f14c9bd-bf5f-41dc-af64-96512665c0e4" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[null]" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="ref to main" doc:id="44a5eec7-81c5-4058-ba99-f23872d04b25" name="scheduler" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="should be able to call the start of the integration" doc:id="9cb7d9c6-57cd-4b19-b58e-2f2251cb7171" processor="logger" times="1" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="391d9ed8-76fd-45cb-8666-4cc0f5a26288" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="should be able to call the integration's default logger" doc:id="613a8c9b-64da-4d3d-afa2-1f12e2225833" processor="logger" times="1">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="c9da5f61-d5f6-41e9-98e4-631e473170cc" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="should be able to call the end of integration" doc:id="556503f1-caa4-4072-be92-d6285bcd6ed5" processor="logger" times="1" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="ecdbbccc-0113-4411-8d53-6a28395e370f" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="shouldn't be able to call the GlobalErrorHandler" doc:id="6958afbe-00a5-4277-82d3-ea66d518a2fc" processor="logger" times="0" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="70a1afa9-41ea-4e29-a1a0-41e72e45556d" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
 
 
 </mule>
