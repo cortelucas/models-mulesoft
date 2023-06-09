@@ -8,6 +8,7 @@
     "read-file-test-suite.xml",
     "scheduler-test-suite.xml",
     "main-test-suite.xml",
+    "move-file-test-suite.xml",
     "main.xml",
     "implementation/move-file.xml",
     "implementation/send-to-database.xml"

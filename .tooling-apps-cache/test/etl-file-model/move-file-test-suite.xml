@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="move-file-test-suite.xml" />
+	<munit:test name="move-file-success-test" doc:id="a269dfdb-f300-45a5-ba47-e5e94a4c8114" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="call move" doc:id="84dad353-066d-468a-81cc-785e3858620d" processor="file:move">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="3eeff9cf-6560-4d7c-8c7c-da7d7432306f" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to move-file" doc:id="819122fe-25ac-4fc5-86b9-497b72d12a33" name="move-file"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="it should be able call file move connector" doc:id="1c9559c7-c595-456a-8a70-c81d4c3e7892" processor="file:move" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="3eeff9cf-6560-4d7c-8c7c-da7d7432306f" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="it shouldn't be able to call the GlobalErrorHandler" doc:id="9ca7b11c-4d5f-4644-b335-bc0541afb591" processor="logger" times="0" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="70a1afa9-41ea-4e29-a1a0-41e72e45556d" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>
