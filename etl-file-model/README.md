@@ -10,3 +10,6 @@ Project that reads a CSV file and sends it to the database.
 - [Anypoint Studio](https://www.mulesoft.com/pt/platform/studio)
 - [File](https://docs.mulesoft.com/file-connector/1.5/)
 - [PostgreSQL](https://www.postgresql.org/)
+
+## ✏️ Test
+![image](https://github.com/cortelucas/models-mulesoft/assets/56851943/0f29c117-b78a-42c4-bdfb-030391ba23bc)
