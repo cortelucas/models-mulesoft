@@ -198,6 +198,63 @@
 			</munit-tools:verify-call>
 		</munit:validation>
 	</munit:test>
+	<munit:test name="main-move-file_error-test" doc:id="8c2be8e8-4112-4850-a99c-2135b2c4dc27" expectedErrorType="ANY">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="call read-file" doc:id="962ee7fc-ab4d-44a6-88df-b580a06b6791" processor="flow-ref" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="7f14c9bd-bf5f-41dc-af64-96512665c0e4" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value='#[readUrl("classpath://mocks/read-file.dwl")]' mediaType="application/csv" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:spy doc:name="Spy" doc:id="871ce0ea-a084-47b2-b1e7-c3a19ac6c8ce" processor="ee:transform" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="1b51aa41-fded-4728-8010-dcb92684251d" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:after-call >
+					<munit-tools:assert-equals doc:name="it should be able to make the payload as expected." doc:id="f883c45f-2b18-4b1c-adda-b336f712134e" actual="#[payload]" expected='#[readUrl("classpath://mocks/transform-data.dwl")]' />
+				</munit-tools:after-call>
+			</munit-tools:spy>
+			<munit-tools:mock-when doc:name="call send-to-database" doc:id="107cbbd6-39ac-45f7-a147-6b6bed909879" processor="flow-ref" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="e4072c82-ba89-49cc-bec7-65daa41ff501" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value='#[readUrl("classpath://mocks/transform-data.dwl")]' />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="call error move-file" doc:id="49967cec-1bdf-4b80-a342-da0c35be42c5" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="f48e0336-da16-49b0-aa75-8d365a5d6066" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="ANY" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="ref to main" doc:id="1bda8af1-4977-4e8e-8eca-8484a6f79558" name="scheduler" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="it should be able to call the start of the integration" doc:id="adb1a0f6-1378-4358-a1eb-b8463600bd54" processor="logger" times="1" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="391d9ed8-76fd-45cb-8666-4cc0f5a26288" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="391d9ed8-76fd-45cb-8666-4cc0f5a26288" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="it should be able to call the GlobalErrorHandler" doc:id="e0568162-5088-48c4-8d05-e8a22e30846c" processor="logger" times="1" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="70a1afa9-41ea-4e29-a1a0-41e72e45556d" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="it should not be able to call ends-integration" doc:id="041f8f54-21ef-41de-94d3-67d40ee071a0" processor="logger" times="0" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="ecdbbccc-0113-4411-8d53-6a28395e370f" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
 
 
 </mule>
