@@ -32,6 +32,40 @@
 			</munit-tools:verify-call>
 		</munit:validation>
 	</munit:test>
+	<munit:test name="move-file-error-test" doc:id="cf10263a-69cb-4a87-b631-ad4a39cfe07d" expectedErrorType="ANY">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="call error move file" doc:id="c0b94504-ae11-463f-b6e3-6923b27bd7be" processor="file:move">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="3eeff9cf-6560-4d7c-8c7c-da7d7432306f" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="ANY" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<try doc:name="Try" doc:id="1d770313-29d8-46c4-bcf2-5ef6658544a6" >
+				<flow-ref doc:name="ref to move-file" doc:id="266262b3-8bb3-4150-bc35-76048de80d97" name="move-file" />
+			</try>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="it should be able to call the connector" doc:id="95649d13-8159-4ab6-8286-f1453698e22e" processor="file:move" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="3eeff9cf-6560-4d7c-8c7c-da7d7432306f" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="it should be able to call the GlobalErrorHandler" doc:id="8842690c-8d58-4794-a77a-ab027a2e8ea6" processor="logger" times="1" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="70a1afa9-41ea-4e29-a1a0-41e72e45556d" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="it should not call the next connector" doc:id="eb13117d-6533-4dad-88c9-adf19d01b906" processor="logger" times="0" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="aac217c3-41a8-4bb7-9c66-d425fbfc2abc" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
 
 
 </mule>
