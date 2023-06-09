@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="listener"
+		doc:id="07b05a19-b797-46d2-93b8-0e64845ca726">
+		<http:listener doc:name="Listener"
+			doc:id="b2317bb0-1851-418f-bfda-178a40b431c2"
+			config-ref="HTTP_Listener_config" path="${http.path}" />
+		<flow-ref doc:name="main"
+			doc:id="1fa55b16-d650-4d31-908b-007d3134321b" name="main" />
+		<ee:transform doc:name="Response"
+			doc:id="bc4c5e3c-1fa4-4a8a-a8f8-f248802ffb91">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message": "Integration ran successfully."
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="scheduler"
+		doc:id="e699eb44-29bf-4d11-8281-e2fe243bd16b">
+		<scheduler doc:name="Scheduler"
+			doc:id="b08333a3-773f-4941-8cb1-f08e3f325de2">
+			<scheduling-strategy>
+				<cron expression="${scheduler.cron_expression}"
+					timeZone="${scheduler.time_zone}" />
+			</scheduling-strategy>
+		</scheduler>
+		<flow-ref doc:name="main"
+			doc:id="6d878759-3903-4f4e-83f7-9cab5ab1de0d" name="main" />
+	</flow>
+	<sub-flow name="main"
+		doc:id="77a4f976-9ed6-4b5d-b685-9966ff379b6a">
+		<logger level="INFO" doc:name="starts-integration"
+			doc:id="391d9ed8-76fd-45cb-8666-4cc0f5a26288"
+			message='#["LOG: starts integration -&gt; " ++ (app.name as String)]' />
+		<flow-ref doc:name="read-file"
+			doc:id="7f14c9bd-bf5f-41dc-af64-96512665c0e4" name="read-file" />
+		<choice doc:name="Choice"
+			doc:id="210dd07c-4f4f-447b-bfd9-b0a6fe286928">
+			<when expression="#[!isEmpty(payload)]">
+				<ee:transform doc:name="transform-data"
+					doc:id="1b51aa41-fded-4728-8010-dcb92684251d">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+
+type PersonOutput = {
+	id: String,
+	name: String,
+	email: String,
+	gender: String,
+	birth_date: Date
+}
+
+var persons: Array<Object> = payload
+---
+persons map ((person): PersonOutput -> {
+    "id": person.id as String,
+    "name": (person.first_name as String) ++ (person.last_name as String),
+    "email": person.email as String,
+    "gender": person.gender as String,
+    "birth_date": person.birth_day as Date
+})]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<flow-ref doc:name="send-to-database"
+					doc:id="e4072c82-ba89-49cc-bec7-65daa41ff501"
+					name="send-to-database" />
+				<flow-ref doc:name="move-file" doc:id="f48e0336-da16-49b0-aa75-8d365a5d6066" name="move-file"/>
+			</when>
+			<otherwise>
+				<logger level="INFO" doc:name="Logger"
+					doc:id="c9da5f61-d5f6-41e9-98e4-631e473170cc"
+					message="There is no data to transform and send." />
+			</otherwise>
+		</choice>
+		<logger level="INFO" doc:name="ends-integration"
+			doc:id="ecdbbccc-0113-4411-8d53-6a28395e370f"
+			message='#["LOG: ends integration -&gt; " ++ (app.name as String)]' />
+	</sub-flow>
+</mule>

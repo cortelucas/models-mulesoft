@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="send-to-database-test-suite.xml" />
+	<munit:test name="send-to-database-success-test" doc:id="460911f0-558e-4a0e-a31d-61ed914e2454" >
+		<munit:behavior >
+			<munit:set-event doc:name="Set Event" doc:id="955f2939-379e-42ee-91e8-2dbc51b06811">
+				<munit:payload value='#[readUrl("classpath://mocks/transform-data.dwl")]' />
+			</munit:set-event>
+			<munit-tools:mock-when doc:name="call bulk-insert" doc:id="9d53e6b9-a73c-46d8-a02e-f1f5cf81c915" processor="db:bulk-insert">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="08501c3e-565d-4ee1-8d5b-33af552fccbd" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java &#10;---&#10; [&#10;  1, &#10;  1, &#10;  1, &#10;  1&#10;]]" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="ref to send-to-database" doc:id="cef3a4ba-707e-4ae3-b27d-75788a50732c" name="send-to-database"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="it shouldn't be able to call the GlobalErrorHandler" doc:id="b3f4379b-58ad-474f-bc6b-8d63ee6439eb" processor="logger" times="0">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="70a1afa9-41ea-4e29-a1a0-41e72e45556d" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="send-to-database-error-test" doc:id="1d626ff8-dcf7-4248-8c70-3b8b3a447bee" expectedErrorType="DB:CONNECTIVITY">
+		<munit:behavior >
+			<munit:set-event doc:name="set payload" doc:id="d7bce100-5849-4ee6-9fd2-2c451e91f8b9">
+				<munit:payload value='#[readUrl("classpath://mocks/transform-data.dwl")]' />
+			</munit:set-event>
+			<munit-tools:mock-when doc:name="call error bulk-insert" doc:id="6b4103f1-12f2-4fd6-a2d0-60f6c97b150c" processor="db:bulk-insert">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="08501c3e-565d-4ee1-8d5b-33af552fccbd" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="DB:CONNECTIVITY" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<try doc:name="Try" doc:id="14909220-2c18-4d17-bb84-0e861a76e6b3" >
+				<flow-ref doc:name="ref to send-to-database" doc:id="4904cfe7-aa11-4e99-bd97-290d238ec307" name="send-to-database" />
+			</try>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="it should be able to call the GlobalErrorHandler" doc:id="adca9e44-f0f0-4262-9dc7-eabd4b8f453d" processor="logger" times="1" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="70a1afa9-41ea-4e29-a1a0-41e72e45556d" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="it should not call the next connector" doc:id="9b55a5cb-b1bc-4504-8b27-97fc7305f6c0" processor="logger" times="0">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="6c7cdb1a-a6c3-42d3-8ec2-c8fb07d7974b" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
+	<sub-flow name="read-file"
+		doc:id="e0d51d2b-94aa-4574-9294-3e59b93c4a1b">
+		<try doc:name="Try" doc:id="14bb40de-4fe8-4512-9def-939838fe71a2">
+			<file:read doc:name="Read"
+				doc:id="fbbb37be-93e8-43f7-bf48-88db0efdba7a"
+				config-ref="File_Config" path="${file.path}" outputMimeType="application/csv">
+				<error-mapping sourceType="FILE:ILLEGAL_PATH" targetType="APP:FILE_NOT_FOUND" />
+
+			</file:read>
+			<logger level="INFO" doc:name="Logger" doc:id="f7453dd3-984c-4a01-b0f7-546d4028ab4d" message='#["There are " ++ sizeOf(payload) as String ++ " records."]'/>
+			<error-handler ref="GlobalErrorHandler" />
+		</try>
+	</sub-flow>
+</mule>
