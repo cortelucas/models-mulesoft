@@ -4,8 +4,10 @@
   xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
   xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-	http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+	http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
   <!-- Configuration Properties -->
   <global-property
     doc:name="Global Property"
@@ -20,6 +22,15 @@
     doc:name="Configuration"
     doc:id="4f06a6cf-de75-4865-9080-13500746c5fd"
     defaultErrorHandler-ref="GlobalErrorHandler" />
+  <http:listener-config 
+    doc:name="HTTP Listener Config"
+    doc:id="51961b8d-ea13-4536-9690-479895228b52"
+    name="HTTP_Listener_config" >
+    <http:listener-connection 
+      host="${http.host}" 
+      port="${http.port}"
+      protocol="${http.protocol}" />
+  </http:listener-config>
 
   <!-- Error Handler -->
   <error-handler 
