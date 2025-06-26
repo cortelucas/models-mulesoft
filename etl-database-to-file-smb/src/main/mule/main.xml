@@ -5,12 +5,15 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
 	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db"
   xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core 
                       http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 	                    http://www.mulesoft.org/schema/mule/ee/core 
                       http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
                       http://www.mulesoft.org/schema/mule/http
-                      http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+                      http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+	                    http://www.mulesoft.org/schema/mule/db
+                      http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd" >
   <flow 
     doc:name="main"
     doc:id="b62a2381-bece-4cb1-b28e-290aa8eace12" 
@@ -29,6 +32,47 @@
       doc:id="9aefd399-c8f1-45c1-9479-ed834d855191" 
       level="INFO" 
       message="LOG: start application #[app.name]" />
+    <db:select 
+      doc:name="count-students" 
+      doc:id="9e846b0a-7450-4fcf-919f-28c392f8e461" 
+      config-ref="Database_Config" 
+      target="countDB" 
+      targetValue="#[payload.count[0]]">
+      <db:sql><![CDATA[SELECT count(*) AS count FROM students;]]></db:sql>
+    </db:select>
+    <set-variable
+      doc:name="lastId" 
+      doc:id="529e62ef-7b21-4d0e-b250-9767f97a8c64" 
+      value='#[""]' 
+      variableName="lastId" 
+      encoding="UTF-8" 
+      mimeType="application/json"/>
+    <choice 
+      doc:name="Choice" 
+      doc:id="e6ad8531-f7e2-4d53-8ca0-222bc6c248be" >
+      <when expression='#[isEmpty(vars.countDB) or vars.countDB == 0]' doc:name="When" >
+        <logger 
+          doc:name="Logger" 
+          doc:id="a1a22309-b0dc-4f35-913c-503a4529a66b"
+          level="INFO"
+          message="LOG: not data." />
+      </when>
+      <otherwise doc:name="Otherwise" >
+        <foreach 
+          doc:name="Foreach" 
+          doc:id="3d15a679-2142-44f2-bc86-c8956537a1e7"
+          collection="#[1 to ceil(vars.countDB /  p('database.batch_size'))]"
+          batchSize="1"
+          counterVariableName="counter"
+          rootMessageVariableName="rootMessage" >  
+          <logger 
+            doc:name="Logger" 
+            doc:id="c34df9d0-5fcc-4c3a-b8c2-1676b8abd153"
+            level="INFO"
+            message="#[vars.counter]" />
+        </foreach>
+      </otherwise>
+    </choice>
     <logger 
       doc:name="end-application" 
       doc:id="531f464c-c813-4b55-9410-dcfc4a5dc921" 
