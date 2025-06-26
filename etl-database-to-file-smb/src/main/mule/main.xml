@@ -3,8 +3,14 @@
   xmlns="http://www.mulesoft.org/schema/mule/core" 
   xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
   xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core 
-                      http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+                      http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+	                    http://www.mulesoft.org/schema/mule/ee/core 
+                      http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+                      http://www.mulesoft.org/schema/mule/http
+                      http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
   <flow 
     doc:name="main"
     doc:id="b62a2381-bece-4cb1-b28e-290aa8eace12" 
@@ -28,6 +34,35 @@
       doc:id="531f464c-c813-4b55-9410-dcfc4a5dc921" 
       level="INFO" 
       message="LOG: end application #[app.name]" />
+    
+    <error-handler ref="GlobalErrorHandler" />
+  </flow>
+
+  <flow 
+    doc:name="http-call"
+    doc:id="5eadb779-019f-413b-8345-575800bf9ca0"
+    name="http-call" >
+    <http:listener 
+      doc:name="Listener" 
+      doc:id="39510a41-ae2e-40ff-ba24-6a19e9b48a06" 
+      config-ref="HTTP_Listener_config" 
+      path="${http.path}" />
+    <flow-ref 
+      doc:name="main-ref"
+      doc:id="bc051a05-da37-48f6-a2b7-5a4724c8da05"
+      name="main" />
+    <ee:transform 
+      doc:name="HTTP Response" 
+      doc:id="a7a02022-9e2d-4b69-b79e-092d9b7268e8" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+  "message": "Application is running!"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
     
     <error-handler ref="GlobalErrorHandler" />
   </flow>
