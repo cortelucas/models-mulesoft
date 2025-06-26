@@ -3,6 +3,32 @@
   xmlns="http://www.mulesoft.org/schema/mule/core" 
   xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
-  
+  xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core 
+                      http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+  <flow 
+    doc:name="main"
+    doc:id="b62a2381-bece-4cb1-b28e-290aa8eace12" 
+    name="main" >
+    <scheduler 
+      doc:name="Scheduler"
+      doc:id="82e2f34c-bb95-4d4d-8392-eb81eb53a1a4" >
+      <scheduling-strategy >
+        <cron 
+          expression="${cron.expression}"
+          timeZone= "${cron.time_zone}" />
+      </scheduling-strategy>
+    </scheduler>
+    <logger 
+      doc:name="start-application" 
+      doc:id="9aefd399-c8f1-45c1-9479-ed834d855191" 
+      level="INFO" 
+      message="LOG: start application #[app.name]" />
+    <logger 
+      doc:name="end-application" 
+      doc:id="531f464c-c813-4b55-9410-dcfc4a5dc921" 
+      level="INFO" 
+      message="LOG: end application #[app.name]" />
+    
+    <error-handler ref="GlobalErrorHandler" />
+  </flow>
 </mule>
