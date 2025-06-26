@@ -5,9 +5,16 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
 	xmlns:http="http://www.mulesoft.org/schema/mule/http"
-  xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-	http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
-	http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	xmlns:db="http://www.mulesoft.org/schema/mule/db"
+  xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core 
+                      http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+                      http://www.mulesoft.org/schema/mule/ee/core
+                      http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+                      http://www.mulesoft.org/schema/mule/http
+                      http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+	                    http://www.mulesoft.org/schema/mule/db
+                      http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd" >
+  
   <!-- Configuration Properties -->
   <global-property
     doc:name="Global Property"
@@ -31,6 +38,14 @@
       port="${http.port}"
       protocol="${http.protocol}" />
   </http:listener-config>
+  <db:config 
+    doc:name="Database Config"
+    doc:id="9a2cdbc3-91eb-4d21-8ff3-89289024e2ee"
+    name="Database_Config" >
+    <db:generic-connection 
+      url="${database.url}" 
+      driverClassName="${database.driver}" />
+  </db:config>
 
   <!-- Error Handler -->
   <error-handler 
