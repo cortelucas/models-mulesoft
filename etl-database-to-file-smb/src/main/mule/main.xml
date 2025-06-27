@@ -47,9 +47,13 @@
       variableName="lastId" 
       encoding="UTF-8" 
       mimeType="application/json"/>
+<<<<<<< HEAD
     <choice 
       doc:name="Choice" 
       doc:id="e6ad8531-f7e2-4d53-8ca0-222bc6c248be" >
+=======
+    <choice doc:name="Choice" doc:id="ayfctm" >
+>>>>>>> e067160c0caf25887703136a5dcdcdaf75a0947f
       <when expression='#[isEmpty(vars.countDB) or vars.countDB == 0]' doc:name="When" >
         <logger 
           doc:name="Logger" 
@@ -62,7 +66,11 @@
           doc:name="Foreach" 
           doc:id="3d15a679-2142-44f2-bc86-c8956537a1e7"
           collection="#[1 to ceil(vars.countDB /  p('database.batch_size'))]"
+<<<<<<< HEAD
           batchSize="1"
+=======
+          batchSize="${database.batch_size}"
+>>>>>>> e067160c0caf25887703136a5dcdcdaf75a0947f
           counterVariableName="counter"
           rootMessageVariableName="rootMessage" >  
           <logger 
